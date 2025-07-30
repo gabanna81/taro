@@ -74,7 +74,8 @@
     document.addEventListener('DOMContentLoaded', function() {
       const TelegramWebApp = window.Telegram?.WebApp;
       if (TelegramWebApp) { TelegramWebApp.ready(); TelegramWebApp.expand(); }
-      // Полный список ваших карт Таро (названия файлов!)
+
+      // ВСЯ колода (названия файлов карт)
       const tarotNames = [
         "the_fool","the_magician","the_high_priestess","the_empress","the_emperor","the_hierophant","the_lovers","the_chariot",
         "strength","the_hermit","wheel_of_fortune","justice","the_hanged_man","death","temperance","the_devil","the_tower",
@@ -89,11 +90,24 @@
         "seven_of_pentacles","eight_of_pentacles","nine_of_pentacles","ten_of_pentacles","page_of_pentacles","knight_of_pentacles",
         "queen_of_pentacles","king_of_pentacles"
       ];
+
+      // ВЫБОР 8 случайных карт:
+      function getRandomCards(srcArray, count) {
+        const array = srcArray.slice();
+        let result = [];
+        while (result.length < count && array.length > 0) {
+          const idx = Math.floor(Math.random() * array.length);
+          result.push(array.splice(idx,1)[0]);
+        }
+        return result;
+      }
+      const displayCards = getRandomCards(tarotNames, 8);
+
       const cardContainer = document.getElementById('card-selection');
       const confirmButton = document.getElementById('confirm-selection');
       let selectedCards = [];
 
-      tarotNames.forEach(cardName => {
+      displayCards.forEach(cardName => {
         const card = document.createElement('div');
         card.classList.add('card');
         card.dataset.name = cardName;
